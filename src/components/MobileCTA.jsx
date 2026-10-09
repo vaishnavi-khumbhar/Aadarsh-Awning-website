@@ -12,7 +12,7 @@ export default function MobileCTA() {
       <div className="h-[68px] sm:hidden" aria-hidden="true" />
       <div className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-beige bg-cream/95 p-2.5 backdrop-blur sm:hidden">
         <a
-          href={tel ? `tel:${tel}` : "/contact"}
+          href={tel ? `tel:${tel}` : `${import.meta.env.BASE_URL}contact`}
           className="btn btn-secondary !py-3 !text-[15px]"
           aria-label="Call Aadarsh Awning"
         >

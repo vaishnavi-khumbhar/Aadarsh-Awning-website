@@ -95,13 +95,13 @@ function TopBar({ hidden }) {
       <div className="container-site flex h-8 items-center justify-between gap-4 text-[12px] lg:h-9 lg:text-[13px]">
         <ul className="flex min-w-0 items-center gap-4 lg:gap-6">
           <li>
-            <a href={tel ? `tel:${tel}` : "/contact"} className={item}>
+            <a href={tel ? `tel:${tel}` : `${import.meta.env.BASE_URL}contact`} className={item}>
               <Phone className="h-3.5 w-3.5 text-gold-champagne" strokeWidth={1.75} aria-hidden="true" />
               <span>{c.phone}</span>
             </a>
           </li>
           <li className="hidden sm:block">
-            <a href={c.email.includes("@") ? `mailto:${c.email}` : "/contact"} className={item}>
+            <a href={c.email.includes("@") ? `mailto:${c.email}` : `${import.meta.env.BASE_URL}contact`} className={item}>
               <Mail className="h-3.5 w-3.5 text-gold-champagne" strokeWidth={1.75} aria-hidden="true" />
               <span>{c.email}</span>
             </a>
@@ -114,7 +114,7 @@ function TopBar({ hidden }) {
         <div className="flex items-center gap-4">
           {/* WhatsApp button — number comes from site.js (contact.whatsapp) */}
           <a
-            href={wa.length >= 10 ? `https://wa.me/${wa.length === 10 ? "91" + wa : wa}?text=${encodeURIComponent("Hello Aadarsh Awning, I would like a quote for an awning.")}` : "/contact"}
+            href={wa.length >= 10 ? `https://wa.me/${wa.length === 10 ? "91" + wa : wa}?text=${encodeURIComponent("Hello Aadarsh Awning, I would like a quote for an awning.")}` : `${import.meta.env.BASE_URL}contact`}
             target={wa.length >= 10 ? "_blank" : undefined}
             rel="noopener noreferrer"
             aria-label="Chat with Aadarsh Awning on WhatsApp"

@@ -12,9 +12,12 @@ import "@fontsource/manrope/600.css";
 import "@fontsource/manrope/700.css";
 import "./index.css";
 
+// Matches vite.config.js "base" (e.g. /Aadarsh-Awning-website/) so routes work on GitHub Pages
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || "/";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <App />
     </BrowserRouter>
   </React.StrictMode>
