@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence, MotionConfig } from "framer-motion";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
@@ -25,7 +25,8 @@ export default function App() {
             <Route path="/approach" element={<Approach />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/404" element={<NotFound />} />
-            <Route path="*" element={<Navigate to="/404" replace />} />
+            {/* Any unknown address shows the 404 page without changing the URL */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>
       </Layout>

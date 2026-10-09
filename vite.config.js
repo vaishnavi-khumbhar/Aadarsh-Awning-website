@@ -1,7 +1,10 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-export default defineConfig({
+// npm run dev                  -> http://localhost:5173/
+// npm run build / npm run preview / GitHub Pages
+//                              -> /Aadarsh-Awning-website/
+export default defineConfig(({ command, isPreview }) => ({
   plugins: [react()],
-  base: '/Aadarsh-Awning-website/',
-})
+  base: command === "build" || isPreview ? "/Aadarsh-Awning-website/" : "/",
+}));
