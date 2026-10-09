@@ -12,8 +12,9 @@ import NotFound from "./pages/NotFound";
 
 export default function App() {
   const location = useLocation();
+  // reducedMotion="never" = always play animations, even if Windows/phone "reduce animations" is on
   return (
-    <MotionConfig reducedMotion="user">
+    <MotionConfig reducedMotion="never">
       <Layout>
         <AnimatePresence mode="wait" initial={false}>
           <Routes location={location} key={location.pathname}>

@@ -1,8 +1,10 @@
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { media } from "../data/media";
 import { products } from "../data/products";
 import { approach, whyUs } from "../data/site";
 import useSeo from "../hooks/useSeo";
-import { Page, Reveal, ImageReveal, Stagger, Item } from "../components/Motion";
+import { Page, Reveal, ease } from "../components/Motion";
 import HeroSlider from "../components/HeroSlider";
 import ImageSlot from "../components/ImageSlot";
 import SectionHeading from "../components/SectionHeading";
@@ -12,6 +14,13 @@ import CtaBanner from "../components/CtaBanner";
 import Button from "../components/Button";
 import Icon from "../components/Icon";
 
+/* Shared animation settings for this page */
+const inView = { once: true, margin: "-80px" };
+const fromLeft = { hidden: { opacity: 0, x: -60 }, show: { opacity: 1, x: 0, transition: { duration: 0.9, ease } } };
+const fromRight = { hidden: { opacity: 0, x: 50 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease } } };
+const rise = { hidden: { opacity: 0, y: 40, scale: 0.96 }, show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.7, ease } } };
+const group = (stagger = 0.12, delay = 0) => ({ hidden: {}, show: { transition: { staggerChildren: stagger, delayChildren: delay } } });
+
 export default function Home() {
   useSeo({
     title: "Aadarsh Awning | Premium Awning & Outdoor Shade Solutions",
@@ -19,56 +28,86 @@ export default function Home() {
       "Professional awning installation and outdoor shade solutions for residential, commercial, industrial and customized projects. Aadarsh Awning — Better Shade. Better Spaces. Since 2015.",
   });
 
+  // Gentle parallax on the brand-story image while scrolling
+  const introRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: introRef, offset: ["start end", "end start"] });
+  const imgY = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+
   return (
     <Page>
       <HeroSlider />
 
-      {/* Section 2 — brand intro */}
-      <section id="intro" className="section bg-cream">
+      {/* ───────── Section 2 — brand intro ───────── */}
+      <section id="intro" ref={introRef} className="section relative overflow-hidden bg-cream">
+        {/* slow-rotating decorative ring */}
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute -left-24 top-10 hidden h-72 w-72 rounded-full border border-dashed border-gold/30 lg:block"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        />
+
         <div className="container-site grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-          <div className="relative lg:col-span-7">
-            <ImageReveal>
-              <ImageSlot
-                src={media.sections.brandStory}
-                alt="Elegant awning shading a modern outdoor living space"
-                slot="sections.brandStory"
-                size="1400 × 1000"
-                className="aspect-[4/3] w-full rounded-[3px] lg:aspect-[7/5]"
-              />
-            </ImageReveal>
-            {/* "Since 2015" badge — outside the reveal so it is never cut off */}
-            <Reveal delay={0.5} className="absolute -bottom-6 right-4 z-10 hidden md:block lg:-right-6">
+          <motion.div className="relative lg:col-span-7" variants={fromLeft} initial="hidden" whileInView="show" viewport={inView}>
+            <div className="group overflow-hidden rounded-[3px]">
+              <motion.div style={{ y: imgY, scale: 1.12 }}>
+                <ImageSlot
+                  src={media.sections.brandStory}
+                  alt="Elegant awning shading a modern outdoor living space"
+                  slot="sections.brandStory"
+                  size="1400 × 1000"
+                  className="aspect-[4/3] w-full transition-transform duration-[1200ms] group-hover:scale-105 lg:aspect-[7/5]"
+                />
+              </motion.div>
+            </div>
+
+            {/* "Since 2015" badge pops in */}
+            <motion.div
+              className="absolute -bottom-6 right-4 z-10 hidden md:block lg:-right-6"
+              initial={{ opacity: 0, scale: 0.6, rotate: -8 }}
+              whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+              viewport={inView}
+              transition={{ type: "spring", stiffness: 180, damping: 14, delay: 0.6 }}
+              whileHover={{ y: -4 }}
+            >
               <div className="border-l-[3px] border-gold bg-white px-7 py-5 shadow-card">
                 <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.28em] text-gold">Since</p>
                 <p className="mt-1 font-serif text-[44px] font-bold leading-none text-navy">2015</p>
               </div>
-            </Reveal>
-          </div>
-          <div className="lg:col-span-5">
-            <Reveal>
-              <p className="eyebrow eyebrow-gold mb-5">Since 2015</p>
-              <h2 className="text-[34px] leading-[1.1] sm:text-[42px] md:text-5xl">
-                Shade Designed <span className="text-gold">Around Your Space</span>
-              </h2>
-            </Reveal>
-            <Reveal delay={0.1} className="lead mt-7 space-y-5">
-              <p>
-                Since 2015, Aadarsh Awning has been transforming everyday spaces with thoughtfully designed
-                awning and shade solutions.
-              </p>
-              <p>
-                For us, shade is more than protection from the sun and rain. It is about creating spaces that
-                feel more comfortable, look better, and work smarter.
-              </p>
-            </Reveal>
-            <Reveal delay={0.2} className="mt-10">
+            </motion.div>
+          </motion.div>
+
+          <motion.div className="lg:col-span-5" variants={group(0.14, 0.2)} initial="hidden" whileInView="show" viewport={inView}>
+            <motion.p variants={fromRight} className="eyebrow eyebrow-gold mb-5">Since 2015</motion.p>
+            <motion.h2 variants={fromRight} className="text-[34px] leading-[1.1] sm:text-[42px] md:text-5xl">
+              Shade Designed <span className="relative inline-block text-gold">
+                Around Your Space
+                <motion.span
+                  aria-hidden="true"
+                  className="absolute -bottom-1 left-0 h-[2px] w-full origin-left bg-gold/60"
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  viewport={inView}
+                  transition={{ duration: 1, ease, delay: 0.9 }}
+                />
+              </span>
+            </motion.h2>
+            <motion.p variants={fromRight} className="lead mt-7">
+              Since 2015, Aadarsh Awning has been transforming everyday spaces with thoughtfully designed
+              awning and shade solutions.
+            </motion.p>
+            <motion.p variants={fromRight} className="lead mt-5">
+              For us, shade is more than protection from the sun and rain. It is about creating spaces that
+              feel more comfortable, look better, and work smarter.
+            </motion.p>
+            <motion.div variants={fromRight} className="mt-10">
               <Button to="/about" variant="secondary">Our Story</Button>
-            </Reveal>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Products */}
+      {/* ───────── Products ───────── */}
       <section className="section bg-ivory">
         <div className="container-site">
           <div className="flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
@@ -77,17 +116,17 @@ export default function Home() {
               title="Awning & Shade Solutions"
               text="Practical solutions designed for residential, commercial and customized applications."
             />
-            <Reveal className="shrink-0">
+            <Reveal className="shrink-0" delay={0.2}>
               <Button to="/products" variant="secondary">View All Products</Button>
             </Reveal>
           </div>
-          <div className="mt-14">
+          <div className="mt-14 [&_article>a]:transition-all [&_article>a]:duration-500 [&_article>a:hover]:-translate-y-2">
             <ProductGrid items={products} />
           </div>
         </div>
       </section>
 
-      {/* Why us — compact */}
+      {/* ───────── Why us ───────── */}
       <section className="section bg-cream">
         <div className="container-site grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-4">
@@ -96,39 +135,93 @@ export default function Home() {
               title="Product and Service, Done Properly"
               text="A good awning is not only about the product. It is also about professional installation and dependable service."
             />
-            <Reveal className="mt-9">
+            <Reveal className="mt-9" delay={0.2}>
               <Button to="/why-us" variant="secondary">Why Choose Us</Button>
             </Reveal>
           </div>
-          <Stagger className="grid gap-px overflow-hidden border border-beige bg-beige sm:grid-cols-2 lg:col-span-8">
+
+          <motion.div
+            className="grid gap-px overflow-hidden border border-beige bg-beige sm:grid-cols-2 lg:col-span-8"
+            variants={group(0.15)}
+            initial="hidden"
+            whileInView="show"
+            viewport={inView}
+          >
             {whyUs.slice(0, 4).map((w) => (
-              <Item key={w.title} className="group bg-white p-7 transition-colors duration-500 hover:bg-ivory md:p-9">
-                <Icon name={w.icon} className="h-8 w-8 text-gold" strokeWidth={1.25} />
+              <motion.div
+                key={w.title}
+                variants={rise}
+                whileHover={{ y: -4 }}
+                className="group relative bg-white p-7 transition-colors duration-500 hover:bg-ivory md:p-9"
+              >
+                {/* gold top bar grows on hover */}
+                <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
+                <motion.span
+                  className="flex h-14 w-14 items-center justify-center rounded-full bg-gold/10 transition-colors duration-500 group-hover:bg-gold"
+                  initial={{ scale: 0, rotate: -90 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  viewport={inView}
+                  transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.3 }}
+                >
+                  <Icon name={w.icon} className="h-7 w-7 text-gold transition-colors duration-500 group-hover:text-white" strokeWidth={1.4} />
+                </motion.span>
                 <h3 className="mt-6 text-[22px]">{w.title}</h3>
                 <span className="mt-4 block h-px w-8 bg-gold transition-all duration-500 group-hover:w-16" />
                 <p className="mt-4 text-[15px] leading-relaxed text-grey">{w.text}</p>
-              </Item>
+              </motion.div>
             ))}
-          </Stagger>
+          </motion.div>
         </div>
       </section>
 
       <Applications />
 
-      {/* Approach strip */}
+      {/* ───────── Approach ───────── */}
       <section className="section bg-cream">
         <div className="container-site">
           <SectionHeading eyebrow="How We Work" title="Our Approach" align="center" />
-          <Stagger className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
-            {approach.map((a, i) => (
-              <Item key={a.no} className={`relative lg:px-8 ${i > 0 ? "lg:border-l lg:border-gold/40" : ""}`}>
-                <p className="font-serif text-6xl font-semibold text-blue-soft/90">{a.no}</p>
-                <h3 className="mt-4 text-2xl">{a.title}</h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-grey">{a.text}</p>
-              </Item>
-            ))}
-          </Stagger>
-          <Reveal className="mt-14 text-center">
+
+          <div className="relative mt-16">
+            {/* gold timeline line draws across (desktop) */}
+            <motion.span
+              aria-hidden="true"
+              className="absolute left-0 right-0 top-[38px] hidden h-px origin-left bg-gradient-to-r from-gold/20 via-gold to-gold/20 lg:block"
+              initial={{ scaleX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={inView}
+              transition={{ duration: 1.6, ease }}
+            />
+            <motion.div
+              className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8"
+              variants={group(0.25, 0.4)}
+              initial="hidden"
+              whileInView="show"
+              viewport={inView}
+            >
+              {approach.map((a) => (
+                <motion.div key={a.no} variants={rise} className="group relative text-center lg:text-left">
+                  <div className="relative inline-flex items-center gap-3">
+                    <span className="relative z-10 font-serif text-6xl font-semibold text-blue-soft/90 transition-colors duration-500 group-hover:text-gold">
+                      {a.no}
+                    </span>
+                    {/* dot on the timeline */}
+                    <motion.span
+                      aria-hidden="true"
+                      className="hidden h-3 w-3 rounded-full bg-gold ring-4 ring-cream lg:block"
+                      initial={{ scale: 0 }}
+                      whileInView={{ scale: 1 }}
+                      viewport={inView}
+                      transition={{ type: "spring", stiffness: 260, damping: 14, delay: 1 }}
+                    />
+                  </div>
+                  <h3 className="mt-4 text-2xl">{a.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-grey">{a.text}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+
+          <Reveal className="mt-14 text-center" delay={0.3}>
             <Button to="/approach" variant="secondary">See Our Approach</Button>
           </Reveal>
         </div>

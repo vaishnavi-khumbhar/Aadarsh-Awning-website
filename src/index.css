@@ -23,13 +23,9 @@
     outline: 2px solid #c8963e;
     outline-offset: 3px;
   }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
+  /* Animations always play (client preference). To respect the visitor's
+     "reduce animations" setting again, restore the prefers-reduced-motion rule
+     and set <MotionConfig reducedMotion="user"> in App.jsx. */
 }
 
 @layer components {
