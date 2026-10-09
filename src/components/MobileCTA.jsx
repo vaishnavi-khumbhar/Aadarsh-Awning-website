@@ -1,10 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
-import { Phone, ArrowRight } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { Phone, MessageSquareText } from "lucide-react";
 import { site } from "../data/site";
+import { useEnquiry } from "./Enquiry";
 
 /* Sticky bottom bar on mobile. Phone link activates once a real number is set. */
 export default function MobileCTA() {
   const { pathname } = useLocation();
+  const { openEnquiry } = useEnquiry();
   if (pathname === "/contact") return null;
   const tel = site.contact.phone.replace(/[^\d+]/g, "");
   return (
@@ -19,10 +21,10 @@ export default function MobileCTA() {
           <Phone className="h-4 w-4" strokeWidth={1.5} />
           <span>Call Us</span>
         </a>
-        <Link to="/contact" className="btn btn-primary !py-3 !text-[15px]">
-          <span>Get a Quote</span>
-          <ArrowRight className="h-4 w-4" />
-        </Link>
+        <button type="button" onClick={openEnquiry} className="btn btn-primary !py-3 !text-[15px]">
+          <MessageSquareText className="h-4 w-4" strokeWidth={1.75} />
+          <span>Enquire Now</span>
+        </button>
       </div>
     </>
   );

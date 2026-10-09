@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import MobileCTA from "./MobileCTA";
+import { EnquiryProvider } from "./Enquiry";
 
 export default function Layout({ children }) {
   const { pathname } = useLocation();
@@ -11,11 +12,13 @@ export default function Layout({ children }) {
   }, [pathname]);
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      <div className="flex-1 pt-[97px] lg:pt-[109px]">{children}</div>
-      <Footer />
-      <MobileCTA />
-    </div>
+    <EnquiryProvider>
+      <div className="flex min-h-screen flex-col">
+        <Header />
+        <div className="flex-1 pt-[97px] lg:pt-[109px]">{children}</div>
+        <Footer />
+        <MobileCTA />
+      </div>
+    </EnquiryProvider>
   );
 }

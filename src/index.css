@@ -116,3 +116,24 @@
     repeating-linear-gradient(135deg, rgba(200, 150, 62, 0.07) 0 1px, transparent 1px 14px),
     linear-gradient(160deg, #f3ece0 0%, #e6dac6 100%);
 }
+
+@layer components {
+  /* Enquiry pop-up inputs (in components layer so utilities like pl-10 can override) */
+.eq-input {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid #e3d8c6;
+  background: #fff;
+  padding: 0.7rem 0.9rem;
+  font-size: 15px;
+  color: #252525;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.eq-input::placeholder { color: #9a9a9a; }
+.eq-input:focus {
+  outline: none;
+  border-color: #4a86b8;
+  box-shadow: 0 0 0 3px rgba(74, 134, 184, 0.18);
+}
+.eq-input[aria-invalid="true"] { border-color: #b4472f; }
+}

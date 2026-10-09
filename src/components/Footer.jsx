@@ -14,7 +14,7 @@ const socials = [
 
 function ColTitle({ children }) {
   return (
-    <h3 className="mb-6 flex items-center justify-center gap-3 font-sans md:justify-start text-[11px] font-semibold uppercase tracking-[0.28em] text-gold-champagne">
+    <h3 className="mb-6 flex items-center justify-center gap-3 font-sans md:justify-start text-[13px] font-bold uppercase tracking-[0.24em] text-gold-champagne">
       {children}
     </h3>
   );
@@ -30,8 +30,8 @@ export default function Footer() {
           <Link to="/" aria-label="Aadarsh Awning — Home" className="inline-block">
             <img src={media.branding.logo} alt="Aadarsh Awning" className="h-20 w-auto rounded-[3px] bg-white p-1.5 shadow-lg" loading="lazy" width="800" height="343" />
           </Link>
-          <p className="mt-6 font-serif text-xl italic text-white">{site.tagline}</p>
-          <p className="mx-auto mt-4 max-w-xs text-sm leading-relaxed text-white/70 md:mx-0">
+          <p className="mt-6 font-serif text-[22px] italic text-white md:text-2xl">{site.tagline}</p>
+          <p className="mx-auto mt-4 max-w-sm text-[16px] leading-relaxed text-white/75 md:mx-0">
             Professional awning installation and outdoor shade solutions for residential, commercial,
             industrial, and customized projects.
           </p>
@@ -41,9 +41,9 @@ export default function Footer() {
                 <a
                   href={site.social[key]}
                   aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/85 transition-colors hover:border-gold hover:bg-gold hover:text-white"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white/85 transition-colors hover:border-gold hover:bg-gold hover:text-white"
                 >
-                  <Icon width={16} height={16} />
+                  <Icon width={18} height={18} />
                 </a>
               </li>
             ))}
@@ -52,7 +52,7 @@ export default function Footer() {
 
         <nav aria-label="Footer" className="lg:col-span-2">
           <ColTitle>Explore</ColTitle>
-          <ul className="space-y-3 text-sm">
+          <ul className="space-y-3.5 text-[16px]">
             {navLinks.map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="gold-underline pb-0.5 transition-colors hover:text-gold-champagne">{l.label}</Link>
@@ -63,7 +63,7 @@ export default function Footer() {
 
         <div className="lg:col-span-3">
           <ColTitle>Products</ColTitle>
-          <ul className="space-y-3 text-sm">
+          <ul className="space-y-3.5 text-[16px]">
             {products.map((p) => (
               <li key={p.slug}>
                 <Link to={`/products/${p.slug}`} className="gold-underline pb-0.5 transition-colors hover:text-gold-champagne">{p.name}</Link>
@@ -74,16 +74,16 @@ export default function Footer() {
 
         <div className="lg:col-span-3">
           <ColTitle>Contact</ColTitle>
-          <ul className="space-y-4 text-sm">
-            <li className="flex justify-center gap-3 md:justify-start"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-gold-champagne" strokeWidth={1.5} />{c.phone}</li>
-            <li className="flex justify-center gap-3 md:justify-start"><Whatsapp width={16} height={16} className="mt-0.5 shrink-0 text-gold-champagne" />{c.whatsapp}</li>
-            <li className="flex justify-center gap-3 md:justify-start"><Mail className="mt-0.5 h-4 w-4 shrink-0 text-gold-champagne" strokeWidth={1.5} />{c.email}</li>
-            <li className="flex justify-center gap-3 md:justify-start"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-champagne" strokeWidth={1.5} />{c.address}</li>
+          <ul className="space-y-4 text-[16px]">
+            <li className="flex justify-center gap-3 md:justify-start"><Phone className="mt-1 h-[18px] w-[18px] shrink-0 text-gold-champagne" strokeWidth={1.5} />{c.phone}</li>
+            <li className="flex justify-center gap-3 md:justify-start"><Whatsapp width={18} height={18} className="mt-1 shrink-0 text-gold-champagne" />{c.whatsapp}</li>
+            <li className="flex justify-center gap-3 md:justify-start"><Mail className="mt-1 h-[18px] w-[18px] shrink-0 text-gold-champagne" strokeWidth={1.5} />{c.email}</li>
+            <li className="flex justify-center gap-3 md:justify-start"><MapPin className="mt-1 h-[18px] w-[18px] shrink-0 text-gold-champagne" strokeWidth={1.5} />{c.address}</li>
           </ul>
         </div>
       </div>
       <div className="border-t border-white/10 bg-[#0B2347]">
-        <div className="container-site flex flex-col items-center gap-2 py-5 text-center text-[13px] text-white/60 sm:flex-row sm:text-left sm:items-center sm:justify-between">
+        <div className="container-site flex flex-col items-center gap-2 py-5 text-center text-[15px] text-white/70 sm:flex-row sm:pr-[250px] lg:pr-[260px] sm:text-left sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Aadarsh Awning. All rights reserved.</p>
           <p>
             Designed &amp; Developed By{" "}

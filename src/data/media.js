@@ -53,7 +53,7 @@ export const media = {
     products: img("products-hero"),
     whyUs: img("why-us-hero"),
     approach: img("approach-hero"),
-    contact: img("contact-hero"),
+    contact: img("contact-hero1"),
   },
 
   products: {
